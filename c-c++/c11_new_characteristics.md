@@ -1,15 +1,15 @@
 # C++11新特性概览
 
 ------
-#####预定义宏
+##### 预定义宏
 \__STDC_HOSTED__ , \__STDC__ , \__STDC_VERSION__ , \_STDC_ISO_10646__
 
 ------
-#####_Pragma__操作符
+##### _Pragma__操作符
 \#pragma once 等价于 _Pragma("once")
 
 ------
-#####____func____
+##### ____func____
 返回所在函数的名称，在结构体构造函数中也可正常使用
 ```C++
 const char * hello() { return __func__; }
@@ -20,11 +20,11 @@ struct Test{
 ```
 
 ------
-#####__static_assert__
+##### __static_assert__
 编译时断言
 
 ------
-#####____VA_ARGS____宏
+##### ____VA_ARGS____宏
 在宏定义的实现部分替换可变参数宏的省略号所代表的字符串
 ```c++
 #define PR(...) printf(__VA_ARGS__)
@@ -36,9 +36,9 @@ struct Test{
 ```
 
 ------
-#####__noexcept__ & __noexcept(constexpr)__
+##### __noexcept__ & __noexcept(constexpr)__
 constexpr:常量表达式，false:函数会抛出异常，true：函数不会抛出异常
-```
+```c++
 int max(int a,int b) noexecpt
 {
     return a > b ? a : b;
@@ -53,12 +53,12 @@ noexcept可用于模板
 noexcept性能比普通的抛出异常更好，因为异常机制有额外的开销，比如函数抛出异常时会导致函数的栈诊被依次展开（unwind），并调用本帧中已构造的自动变量的析构函数
 
 ------
-#####__long long int__
+##### __long long int__
 long long int至少64位
 c++11规定了5中标准的整形 signed char，signed short，signed int，signed long，signed long long，并规定这每种整形都有一个与之对应的unsigned类型
 c++11支持非标准整形扩展（例如某些嵌入式系统中使用48位整形），不限自定义整形的长度，但是规定signed类型和unsigned类型必须一样长
 自定义整形的等级比标准整形低（隐式类型转换时用到）
-```
+```c++
 #include <climits>
 #include <cstdio>
 #include <iostream>
@@ -80,9 +80,9 @@ int main()
 }
 ```
 ----
-#####__快速初始化成员变量__
+##### __快速初始化成员变量__
 c++11支持=，{}就地初始化类成员变量
-```
+```c++
 #include <iostream>
 #include <string>
 
@@ -147,13 +147,13 @@ a:100 ,b:100.1 ,s:linux
 ```
 
 -----
-#####非静态成员sizeof
+##### 非静态成员sizeof
 非静态成员可以直接使用sizeof求大小，如：sizeof(student.score)
 
 -----
-#####扩展的friend语法
+##### 扩展的friend语法
 friend声明友元类时不再需要class关键字，且可以使用type'de'f别名
-```
+```c++
 class LiLei;
 typedef LiLei Lee;
 template<typename T>
@@ -172,10 +172,10 @@ private:
 C++11支持不带class关键字的friend友元类声明使得友元类可以应用在模板上，特别的是**如果模板类是原生类型如int，long等则编译器会默默地将其实例化为一个不带友元类的普通类**
 
 -----
-#####final & override
+##### final & override
 final：使用final声明的类虚成员函数禁止被派生类重写
 override：派生类中使用override声明的基类虚函数必须被重写
-```
+```c++
 #include <iostream>
 
 using namespace std;
@@ -213,9 +213,9 @@ int main()
 ```
 
 -----
-#####默认模板参数
+##### 默认模板参数
 C++98支持类模板的默认模板参数，但不支持函数模板的默认模板参数，C++11新增了对函数模板的默认模板参数的支持，类模板的默认模板参数需遵循“从右至左”原则，而函数模板则不需要
-```
+```c++
 template<typename T = int> class Test {}; //ok
 template<typename T = int> void func(){} //c++98 error,C++11 ok
 template<typename T,typename U = double> class Test{}; // ok
@@ -226,8 +226,8 @@ template<typename T = int,typename U> void func(){} //ok,函数模板不需要�
 ```
 
 -----
-#####外部模板 & 局部和匿名类型作为模板实参
-```
+##### 外部模板 & 局部和匿名类型作为模板实参
+```c++
 //外部模板
 extern template void func<int>(int)
 template<typename T> class Test {}
@@ -246,8 +246,8 @@ void Func()
 }
 ```
 -----
-#####继承构造函数
-```
+##### 继承构造函数
+```c++
 #include <iostream>
 #include <string>
 
@@ -316,8 +316,8 @@ int main()
 6.使用了继承构造函数，编译器就不再为继承类生产默认构造函数了
 ```
 -----
-#####委派构造函数
-```
+##### 委派构造函数
+```c++
 #include <iostream>
 #include <string>
 
@@ -346,11 +346,11 @@ int main()
 3.目标委托构造函数中产生的异常可以委托构造函数中捕获
 ```
 -----
-#####右值引用：移动语义和完美转发
+##### 右值引用：移动语义和完美转发
 左值：可以取地址，有名字
 右值：不能取地址，没有名字
 移动构造函数：
-```
+```c++
 #include <iostream>
 #include <string.h>
 
@@ -400,7 +400,7 @@ g++ -std=c++11 -Wall -fno-elide-constructors -O0 -o test move_constructor.cpp注
 引用折叠：
 T & && 自动折叠为 T &
 T && && 自动折叠为 T &&
-```
+```c++
 //完美转发
 //template<typename T> void PerfectForward(T && t)
 #include <iostream>
@@ -432,8 +432,8 @@ const lvalue reference
 const rvalue reference
 ```
 -----
-#####显示操作符转换
-```
+##### 显示操作符转换
+```c++
 #include <iostream>
 
 using namespace std;
@@ -459,9 +459,9 @@ int main()
 }
 ```
 -----
-#####列表初始化
+##### 列表初始化
 1.列表表达式使用
-```
+```c++
 #include <iostream>
 #include <vector>
 #include <set>
@@ -486,7 +486,7 @@ int main()
 }
 ```
 2.自定义对象初始化支持列表表达式 & 函数参数支持列表表达式
-```
+```c++
 #include <iostream>
 
 using namespace std;
@@ -519,12 +519,12 @@ int main()
 ```
 3.防止类型收窄
 列表表达式初始化方式是C++11中唯一可以防止类型收窄的方式
-```
+```c++
 int i = 1.2;//实际存储的是1，float/double收窄为int
 int j {2.0f};//编译失败，防止类型收窄
 ```
 -----
-#####POD
+##### POD
 Plain Old Data定义
 >* 1.拥有平凡的默认构造函数（trivial constructor）和析构函数(trivial destructor)，所谓平凡的构造函数即什么都不做的构造函数，自定义的构造函数都不是平凡的构造函数
 >* 2.拥有平凡的拷贝构造函数和移动构造函数，使用简单的为拷贝方式进行拷贝
@@ -542,13 +542,13 @@ Plain Old Data定义
 5.所有非静态成员均符合标准布局类型，其基类也符合标准布局
 
 -----
-#####非受限联合体
+##### 非受限联合体
 任何非引用类型都可成为联合体的数据成员
 联合体拥有非POD成员且该成员有非平凡构造函数，则该联合体的默认构造函数将被编译器删除（其他的各种构造函数也一样），这种情况下程序员应该自己定义联合体的构造函数
 
 -----
-#####用户自定义字面量
-```
+##### 用户自定义字面量
+```c++
 #include <iostream>
 
 using namespace std;
@@ -572,19 +572,19 @@ int main()
 }
 ```
 c++11字面量什么规则：
-    >* 如果字面量为整数，那么字面量操作符函数的参数只能是unsigned long long或者const char *，unsigned long long无法容纳字面量的时候，编译器会自动将该字面量转换为以'\0'结尾的字符串，并调用已const char *为参数的版本的字面量操作符函数处理字面量
-    >* 如果字面量为浮点型，那么字面量操作符函数的参数只能是long double或者const char *（该类型的调用规则同上）
-    >* 如果字面量为字符串，则字面量操作符函数只能接受const char *，size_t为参数（已知长度的字符串）
-    >* 在字面量操作符函数声明中 operator ""与用户自定义后缀之间必须要有空格
-    >* 后缀建议以下划线开始（20120102L表示一个合法的长整型数，如果自定义一个不以下划线开头L为后缀的类型则容易引起混乱）
+>* 如果字面量为整数，那么字面量操作符函数的参数只能是unsigned long long或者const char *，unsigned long long无法容纳字面量的时候，编译器会自动将该字面量转换为以'\0'结尾的字符串，并调用已const char *为参数的版本的字面量操作符函数处理字面量
+>* 如果字面量为浮点型，那么字面量操作符函数的参数只能是long double或者const char *（该类型的调用规则同上）
+>* 如果字面量为字符串，则字面量操作符函数只能接受const char *，size_t为参数（已知长度的字符串）
+>* 在字面量操作符函数声明中 operator ""与用户自定义后缀之间必须要有空格
+>* 后缀建议以下划线开始（20120102L表示一个合法的长整型数，如果自定义一个不以下划线开头L为后缀的类型则容易引起混乱）
 
 -----
-#####内联名字空间
+##### 内联名字空间
 这个自己google吧
 
 -----
-#####模板的别名
-```
+##### 模板的别名
+```c++
 //C++98:typedef,C++11新增using语法
 typedef unsigned char uint8; 
 using uint8 = unsigned char;
@@ -592,7 +592,7 @@ template<typename T> using MapStr = map<T,string>;
 MapStr<int> number_string;
 ```
 -----
-#####auto类型推导
+##### auto类型推导
 >* auto可以与指针和引用结合起来使用
 >* 可以与cv(const  & volatile)限定符一起结合使用
 >* auto不会带走cv特性
@@ -603,13 +603,13 @@ auto不能推导的4种情况
 >* 函数的形参不能是auto的
 >* 对结构体来说，非静态成员变量的类型不能是auto的
 >* 声明auto数组
-```
+```c++
 char x[3];
 auto y = x;
 auto z[3] = x;//compile error
 ```
 >* 实例化模板的时候使用auto作为模板参数，入vector<auto> v
-```
+```c++
 auto i = 1; //int
 auto d = 1.11f; //float 
 auto & j = i; // int &
@@ -620,9 +620,9 @@ volatile auto & g = d; //volatile float &
 const string s = "hello"
 auto s1 = s;//string，不是const string，auto不会带走cv特性，但是引用和指针会带走
 ```
-#####typeid & decltype
+##### typeid & decltype
 __typeid__
-```
+```c++
 //查询变量的类型
 #include <iostream>
 #include <typeinfo>
@@ -651,7 +651,7 @@ decltype总是以一个普通的表达式为参数，类型推导是在编译时
 >* 否则，假设e的类型是T，则decltype(e)为T
 
 ps：标记符表达式：所有出去关键字、字面量等编译器需要使用的标记之外的程序员自定义的的标记都可以是标记符，单个标记符对应的表达式就是标记符表达式
-```
+```c++
 using size_t = decltype(sizeof(0));
 using ptrdiff = decltype((int*)0-(int*)0);
 using nullptr_t = decltype(nullptr);
@@ -662,7 +662,7 @@ int * p = &i;
 delctype(pp)* pp = &p; //pp的类型是 int **，*不会被省略
 ```
 在模板中的应用：
-```
+```c++
 template<typename T1,typename T2>
 void sum(T1 t1,T2 t2,decltype(t1+t2) & ret_var){
     ret_var = t1 + t2;
@@ -674,8 +674,8 @@ auto sum(T1 t1,T2 t2) -> decltype(t1+t2){
 //以上两个模板如果是在c++98中我们必须重载出多种返回值的模板，而在C++11中这些事情可以让编译器帮你做
 ```
 -----
-#####追踪返回类型
-```
+##### 追踪返回类型
+```c++
 template<typename T1,typename T2>//在模板中的应用
 auto sum(T1 t1,T2 t2) -> decltype(t1+t2){
     return t1+t2;
@@ -685,16 +685,16 @@ auto (&fp)(int,int) -> int;//在函数引用上的应用
 ps:可以用在类或者结构体成员函数、模板类成员函数上
 ```
 -----
-#####新的for循环
-```
+##### 新的for循环
+```c++
 vector<int> int_vec;
 for(auto i : int_vec) //for(int & i : int_vec)使用引用的方式
     cout << i << endl;
 使用这种for循环需要迭代的对象实现++和==等操作符
 ```
 -----
-#####强枚举类型
-```
+##### 强枚举类型
+```c++
 enum class Gender { Male,Female };//旧枚举没有class关键字
 enum class RGB : char { R='r',G='g',B='b'};//指定底层类型的强枚举
 ```
@@ -704,7 +704,7 @@ enum class RGB : char { R='r',G='g',B='b'};//指定底层类型的强枚举
 >* enum class和enum struct是一样的
 
 -----
-#####C++11中的智能指针(unique_ptr,shared_ptr,weak_ptr)
+##### C++11中的智能指针(unique_ptr,shared_ptr,weak_ptr)
 -----
 __unique_ptr__
 指针所指对象的所有权独占，所有权仅能通过标准库的move函数实现转移，转移后原来占有内存对象的指针会失去内存对象的所有权，从实现上来讲，unique_ptr是一个删除了拷贝构造函数、保留了移动构造函数的指针封装类型，程序员仅可以通过右值对unique_ptr对象进行构造
@@ -712,7 +712,7 @@ __shared_ptr__
 指针所指的对象所有权可以在多个shared_ptr共享，shared_ptr是采用引用计数实现的，一旦一个shared_ptr放弃了所有权计数就减一，只有在计算器值为0的时候对象所占内存才被真正的释放
 __weak_ptr__
 它可以指向shared_ptr指针所指向的对象的内存，却并不拥有该对象的内存，使用weak_ptr成员lock则返回一个shared_ptr对象，且在所指对象内存失效时返回空指针（可以用来验证shared_ptr的有效性）
-```
+```c++
 #include <iostream>
 #include <memory>
 
@@ -768,12 +768,12 @@ int main()
 }
 ```
 -----
-#####常量表达式--constexpr
+##### 常量表达式--constexpr
 constexpr：编译时常量，虽然编译器不一定这么实现但是至少效果看起来是这样的，它可以作用于函数、数据声明、类的构造函数
 __常量表达式函数__
 常量表达式函数的要求
 >* 函数体只有单一的return返回语句
-```
+```c++
 //不是单一return语句，无法编译通过
 constexpr int data(){ const int i = 0;return i;}
 constexpr int func(int x){
@@ -783,12 +783,12 @@ constexpr int func(int x){
 }
 ```
 >* 函数必须返回值不能是void返回
-```
+```c++
 //没有返回值，编译出错
 constexpr f(){}
 ```
 >* 使用前必须已定义
-```
+```c++
 constexpr int f();
 int a = f();//a非常量表达式，编译器将f转换成函数调用，ok
 const int b = f();//b非常量表达式，编译器将f转换成函数调用，ok
@@ -797,7 +797,7 @@ constexpr int f() {return 1;}//定义
 constexpr int d = f();//ok，f已经定义过了
 ```
 >* return语句表达式中不能使用非常量表达式函数、全局函数，且必须是一个常量表达式
-```
+```c++
 const int e() { return 1;}
 //编译失败，使用非常量表达式函数
 constexpr int g() { return e(); }
@@ -805,12 +805,12 @@ constexpr int g() { return e(); }
 __常量表达式值__
 常量表达式值必须被一个常量表达式赋值，且在使用前必须被初始化，未被使用的常量表达式值编译器可以不为其生成实际代码，比较特殊的是浮点数常量表达式值，因为编译器编译时浮点数的精度和运行时精度可能不一致，所以浮点数常量表达式值要求运行时精度要大于等于编译时精度
 自定义类型无法直接使用constexpr来修饰，如下面的写法是无法通过编译的：
-```
+```c++
 constexpr struct MyType { int i; };
 constexpr MyType mt = {0};
 ```
 要使自定义类型可以成为常量表达式值我们需要为自定义类型对象提供常量表达式构造函数
-```
+```c++
 struct MyType{
     constexpr MyType(int x):i(x){}
     int i;
@@ -825,15 +825,14 @@ __常量表达式的其他应用__
 >* 递归的常量表达式函数应该至少支持512层的递归
 
 -----
-#####变长模板
+##### 变长模板
 -----
-#####原子类型
-```
+##### 原子类型
+```c++
 头文件：#include <cstdatomic>
 ```
 __原子类型和内置类型对应表__
 |原子类型名称|对应内置类型名称|
-|----|----|
 |atomic_bool|bool|
 |atomic_char|char|
 |atomic_schar|signed char|
@@ -850,13 +849,12 @@ __原子类型和内置类型对应表__
 |atomic_char32_t|char32_t|
 |atomic_wchar_t|wchar_t|
 除了上述已经定义好的方式，还可以使用atomic类模板定义任意类型的的原子类型
-```
+```c++
 std::atomic<T> t;
 ```
 C++11标准不允许原子类型进行拷贝构造、移动构造，以及使用operator=等进行构造，只能重启模板参数类型中进行构造，atomic类模板总是定义了从atomic< T >到T的类型转换函数，编译器会在必要的时候进行隐式类型转换
 __atomic类型的操作__
 |操作|atomic_flag|atomic_bool|atomic-integral-type|atomic< bool >|atomic< T* >|atomic< integral-type >|atomic< class-type >|
-|----|----|
 |test_and_set|Y|||||||
 |clear|Y|||||||
 |is_lock_free||Y|Y|Y|Y|Y|Y|
@@ -872,7 +870,7 @@ __atomic类型的操作__
 |++,--|||Y||Y|Y|Y|
 notice：
 atomic_flag是无锁的，线程对其进行访问的时候是不需要加锁的
-```
+```c++
 //使用atomic_flag实现自旋锁
 #include <iostream>
 #include <atomic>
@@ -929,7 +927,7 @@ int main()
 ```
 memory_order枚举值
 |枚举值|定义规则|
-|----|----|
+|------|------|
 |memory_order_relaxed|不对执行顺序做任何保证|
 |memory_order_acquire|本线程中，所有后续操作必须在本原子操作完成后执行|
 |memory_order_release|本线程中，所有之前的写操作完成后才能执行本原子操作|
@@ -939,20 +937,20 @@ memory_order枚举值
 
 
 -----
-#####线程局部存储
-```
+##### 线程局部存储
+```c++
 int thread_local err_code;
 //ps:thread_local变量的性能一般不会高于普通全局/静态变量
 ```
 -----
-#####快速退出
-```
+##### 快速退出
+```c++
 abort,terminate:异常退出，不会自动调用析构函数，可以使用set_terminate改变terminate函数的默认行为，abort默认向符合POSIX的系统抛出一个SIGABRT信号
 exit[at_exit]:正常退出，会正常调用自动变量的西沟函数，并且还会调用atexit注册的函数
 quick_exit[at_quick_exit]:正常退出，不执行析构函数（某些时候不析构自动变量没什么问题）
 ```
 -----
-#####nullptr
+##### nullptr
 nullptr是关键字，类型未nullptr_t，该类型是有decltype(nullptr)得到的，只能被隐式转换为指针类型（不可以是整形），nullptr是一个编译时期常量，nullptr到任何指针的转换是隐式的，nullptr_t对象的地址可以被用户使用，但是nullptr不能取地址
 >* 所有定义为nullptr_t类型的的数据都是等价的，行为完全一致
 >* nullptr_t类型数据可以隐式转换为任意指针类型
@@ -960,8 +958,8 @@ nullptr是关键字，类型未nullptr_t，该类型是有decltype(nullptr)得�
 >* nullptr_t类型不适用于算术运算表达式，但可以用于关系运算表达式（==,<=,>=等）
 
 -----
-#####默认函数控制:[=default,=delete]
-```
+##### 默认函数控制:[=default,=delete]
+```c++
 #include <iostream>
 
 using namespace std;
@@ -988,8 +986,8 @@ int main()
 }
 ```
 -----
-#####lambda表达式
-```
+##### lambda表达式
+```c++
 [capture] (parameters) mutable -> return-type {statement}
 ```
 >* capture:捕捉列表，捕捉上下文中的变量供lambda表达式使用
@@ -1005,4 +1003,5 @@ _捕捉列表语法_
 >* [&]：引用方式捕捉父作用域的变量，包括this
 >* [this]：传值方式捕捉当前的this指针
 ps：可以多种方式组合使用，用逗号分隔即可，仅能捕捉父作用域的自动变量，非此作用域或者非自动变量都会导致编译失败
-  [1]: http://en.cppreference.com/w/cpp/language/copy_elision
+ 
+[1]: http://en.cppreference.com/w/cpp/language/copy_elision
