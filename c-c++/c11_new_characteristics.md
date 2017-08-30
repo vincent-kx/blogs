@@ -738,7 +738,7 @@ int main()
         return 0;
 }
 ```
-```
+```c++
 #include <iostream>
 #include <memory>
 
@@ -832,42 +832,15 @@ __常量表达式的其他应用__
 头文件：#include <cstdatomic>
 ```
 __原子类型和内置类型对应表__
-|原子类型名称|对应内置类型名称|
-|atomic_bool|bool|
-|atomic_char|char|
-|atomic_schar|signed char|
-|atomic_uchar|unsigned char|
-|atomic_int|int|
-|atomic_uint|unsigned int|
-|atomic_short|short|
-|atomic_ushort|unsigned short|
-|atomic_long|long|
-|atomic_ulong|unsigned long|
-|atomic_llong|long long|
-|atomic_ullong|unsigned long long|
-|atomic_char16_t|char16_t|
-|atomic_char32_t|char32_t|
-|atomic_wchar_t|wchar_t|
+<table><thead><tr><th>原子类型名称</th><th>对应内置类型名称</th></tr></thead><tbody><tr><td>atomic_bool</td><td>bool</td></tr><tr><td>atomic_char</td><td>char</td></tr><tr><td>atomic_schar</td><td>signed char</td></tr><tr><td>atomic_uchar</td><td>unsigned char</td></tr><tr><td>atomic_int</td><td>int</td></tr><tr><td>atomic_uint</td><td>unsigned int</td></tr><tr><td>atomic_short</td><td>short</td></tr><tr><td>atomic_ushort</td><td>unsigned short</td></tr><tr><td>atomic_long</td><td>long</td></tr><tr><td>atomic_ulong</td><td>unsigned long</td></tr><tr><td>atomic_llong</td><td>long long</td></tr><tr><td>atomic_ullong</td><td>unsigned long long</td></tr><tr><td>atomic_char16_t</td><td>char16_t</td></tr><tr><td>atomic_char32_t</td><td>char32_t</td></tr><tr><td>atomic_wchar_t</td><td>wchar_t</td></tr></tbody></table>
 除了上述已经定义好的方式，还可以使用atomic类模板定义任意类型的的原子类型
 ```c++
 std::atomic<T> t;
 ```
 C++11标准不允许原子类型进行拷贝构造、移动构造，以及使用operator=等进行构造，只能重启模板参数类型中进行构造，atomic类模板总是定义了从atomic< T >到T的类型转换函数，编译器会在必要的时候进行隐式类型转换
 __atomic类型的操作__
-|操作|atomic_flag|atomic_bool|atomic-integral-type|atomic< bool >|atomic< T* >|atomic< integral-type >|atomic< class-type >|
-|test_and_set|Y|||||||
-|clear|Y|||||||
-|is_lock_free||Y|Y|Y|Y|Y|Y|
-|load||Y|Y|Y|Y|Y|Y|
-|store||Y|Y|Y|Y|Y|Y|
-|exchange||Y|Y|Y|Y|Y|Y|
-|compare_exchange_weak  compare_exchange_strong||Y|Y|Y|Y|Y|Y|
-|fetch_add,+=|||Y||Y|Y||
-|fetch_sub,-=|||Y||Y|Y||
-|fetch_or,\|=||Y|||Y|||
-|fetch_and,&=|||Y|||Y||
-|fetch_xor,^=|||Y|||Y||
-|++,--|||Y||Y|Y|Y|
+<table><thead><tr><th>操作</th><th>atomic_flag</th><th>atomic_bool</th><th>atomic-integral-type</th><th>atomic&lt; bool &gt;</th><th>atomic&lt; T* &gt;</th><th>atomic&lt; integral-type &gt;</th><th>atomic&lt; class-type &gt;</th></tr></thead><tbody><tr><td>test_and_set</td><td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>clear</td><td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>is_lock_free</td><td></td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr><tr><td>load</td><td></td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr><tr><td>store</td><td></td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr><tr><td>exchange</td><td></td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr><tr><td>compare_exchange_weak  compare_exchange_strong</td><td></td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr><tr><td>fetch_add,+=</td><td></td><td></td><td>Y</td><td></td><td>Y</td><td>Y</td><td></td></tr><tr><td>fetch_sub,-=</td><td></td><td></td><td>Y</td><td></td><td>Y</td><td>Y</td><td></td></tr><tr><td>fetch_or,|=</td><td></td><td>Y</td><td></td><td></td><td>Y</td><td></td><td></td></tr><tr><td>fetch_and,&amp;=</td><td></td><td></td><td>Y</td><td></td><td></td><td>Y</td><td></td></tr><tr><td>fetch_xor,^=</td><td></td><td></td><td>Y</td><td></td><td></td><td>Y</td><td></td></tr><tr><td>++,--</td><td></td><td></td><td>Y</td><td></td><td>Y</td><td>Y</td><td>Y</td></tr></tbody></table>
+
 notice：
 atomic_flag是无锁的，线程对其进行访问的时候是不需要加锁的
 ```c++
@@ -926,14 +899,7 @@ int main()
 }
 ```
 memory_order枚举值
-|枚举值|定义规则|
-|------|------|
-|memory_order_relaxed|不对执行顺序做任何保证|
-|memory_order_acquire|本线程中，所有后续操作必须在本原子操作完成后执行|
-|memory_order_release|本线程中，所有之前的写操作完成后才能执行本原子操作|
-|memory_order_acq_rel|同时包含memory_order_acquire和memory_order_release标记|
-|memory_order_consume|本线程中，所有后续的有关本原子类型的操作，必须在本条原子操作完成之后执行|
-|memory_order_seq_cst|全部存取都按顺序执行|
+<table><thead><tr><th>枚举值</th><th>定义规则</th></tr></thead><tbody><tr><td>memory_order_relaxed</td><td>不对执行顺序做任何保证</td></tr><tr><td>memory_order_acquire</td><td>本线程中，所有后续操作必须在本原子操作完成后执行</td></tr><tr><td>memory_order_release</td><td>本线程中，所有之前的写操作完成后才能执行本原子操作</td></tr><tr><td>memory_order_acq_rel</td><td>同时包含memory_order_acquire和memory_order_release标记</td></tr><tr><td>memory_order_consume</td><td>本线程中，所有后续的有关本原子类型的操作，必须在本条原子操作完成之后执行</td></tr><tr><td>memory_order_seq_cst</td><td>全部存取都按顺序执行</td></tr></tbody></table>
 
 
 -----
