@@ -4,7 +4,7 @@
 
 假如我们有一组后端服务为用户提供某些功能，各服务之间的调用关系（简化的）可能如下图
 
-![简单的测试环境服务依赖关系图](/mycode/mygit/blogs/pics/simple_test_evn.png)
+![简单的测试环境服务依赖关系图](../pics/simple_test_evn.png)
 
 在实际的工作中，我们经常遇到这种场景：同时有多个feature在开发，比如feature_x,feature_y，feature_z，
 
@@ -16,7 +16,7 @@
 
 在feature_y测试通过之前”user_account_balance接口对外输出不改变“这个承诺是无法得到保障的，如果我们只有一个测试环境，多个feature都只能在这个测试环境上进行测试，那么feature_x,feature_y的测试只能串行。如果并行进行测试的话，服务部署会是下面这个样子的(浅绿表示feature_x，紫色表示feature_y)：
 
-![并行测试](/mycode/mygit/blogs/pics/simple_test_env_1.png)
+![并行测试](../pics/simple_test_env_1.png)
 
 测试过程中如果feature_y有bug导致user_account_balance返回的数据不对，就会间接导致user_account_show接口返回的展示信息也不对，从而导致测试认为。但实际feature_x的修改。
 
@@ -32,7 +32,7 @@
 
 先不废话，上个图
 
-![多版本测试](/mycode/mygit/blogs/pics/multi_test_env.png)
+![多版本测试](../pics/multi_test_env.png)
 
 由上面的分析我们可以知道要考虑的是“怎么已较小的代价实现测试环境特性隔离”，“代价小”也就是尽可能少的部署服务，只部署有修改的服务即可；“特性隔离”就是不同特性分支的请求分别路由到支持对应特性的服务版本上。参考上图：
 
@@ -54,49 +54,52 @@ Ry的调用链：app_srv0 —> app_srv1 —> app_srv2 —> app_srv4\_y —> app_
 
 ```json
 //feature_x
-comm_head:{
-  route_id:feature_x_20180101
+//comm_head
+{
+  "route_id":"feature_x_20180101"
 }
 
-//feature_y
-comm_head:{
-  route_id:feature_y_20180101
+//feature_y 
+//comm_head
+{
+  "route_id:feature_y_20180101"
 }
 ```
 
 存储一张路由表
 
 ```json
-route_table:{
-  	feature_x_20180101:{
-      [
-        appid : app_srv1,
-        srv_version : app_srv1_xxx,
-        addr:"ip:port"
-      ],
-      [
-        appid : app_srv4,
-        srv_version : app_srv4_xxx,
-        addr:"ip:port"
-      ],
-      [
-        appid : app_srv1,
-        srv_version : app_srv6_xxx,
-        addr:"ip:port"
-      ],
+//route_table
+{
+  "feature_x_20180101": [
+    {
+      "appid": "app_srv1",
+      "srv_version": "app_srv1_xxx",
+      "addr": "ip:port"
+    },
+    {
+      "appid": "app_srv4",
+      "srv_version": "app_srv4_xxx",
+      "addr": "ip:port"
+    },
+    {
+      "appid": "app_srv1",
+      "srv_version": "app_srv6_xxx",
+      "addr": "ip:port"
     }
-  	feature_y_20180101:{
-      [
-        appid : app_srv4,
-        srv_version : app_srv4_yyy,
-        addr:"ip:port"
-      ],
-      [
-        appid : app_srv7,
-        srv_version : app_srv7_yyy,
-        addr:"ip:port"
-      ]
+  ],
+  "feature_y_20180101": [
+    {
+      "appid": "app_srv4",
+      "srv_version": "app_srv4_yyy",
+      "addr": "ip:port"
+    },
+    {
+      "appid": "app_srv7",
+      "srv_version": "app_srv7_yyy",
+      "addr": "ip:port"
     }
+  ]
 }
 ```
 
