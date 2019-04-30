@@ -18,14 +18,14 @@
 
 
 
-###选择合适的容器
+### 选择合适的容器
 
 + 如果在意查找速度，那么应该按 "散列容器(hash) -> 排序的vector(二分查找) -> 关联容器(红黑树)"的优先级考虑选择使用哪种容器
 + 大部分string和权威rope的实现是基于引用计数的，如果你对底层的引用计数很在意，那么应该考虑使用vector\<char\>来代替
 + list是唯一提供多元素插入**事务性**语义的标准stl容器(连续容器也可以实现事务性语义，不过有比较大的开销，可以参考《exceptional C++》条款17[8])
 + 一般基于连续内存的容器在插入和删除会使所有的迭代器、指针和引用都失效，而基于节点的迭代器不会
 
-###使容器对象的拷贝轻量而正确
+### 使容器对象的拷贝轻量而正确
 
 + 容器原始的增加、移动等都是依赖copy完成的，也就是依赖元素对象的copy constructor 和 assignment constructor，由于继承的存在，将一个子类对象放入元素是父类对象的容器时，拷贝会导致分割，也就是实际拷贝的时候调用的是父类的copy constructor，这样子类对象的派生部分会被删除(<font color="#dd0000">关于分割问题更多的背景知识，请参考《Effective C++》条款22</font>>)，如果确实需要将子类对象放到元素是父类对象的容器中时，应该优先考虑使用指针容器
 
@@ -365,7 +365,7 @@ insert函数：
 
 从两个函数的执行原理上来看，很容易得出最开始的结论
 
-###尽量用iterator代替const_iterator，reverse_iterator和const_reverse_iterator
+### 尽量用iterator代替const_iterator，reverse_iterator和const_reverse_iterator
 原因：iterator在stl的函数接口中是使用最广泛的，而从其他三种转换成iterator通常很麻烦，而且有些是无法完成的，为了代码的便利性，我们尽量使用iterator
 
 转换关系：
@@ -415,7 +415,7 @@ results.resize(values.size());
 
 partition < stable_partition < nth_element < partial_sort < sort < stable_sort
 
-###remove并不“真的”删除东西，因为它做不到
+### remove并不“真的”删除东西，因为它做不到
 
 remove算法的签名是这样的：
 
